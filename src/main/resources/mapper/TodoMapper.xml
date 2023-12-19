@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.web2.mapper.TodoMapper">
+
+    <insert id="registerTodo">
+        INSERT INTO Todo (userId, title, completed)
+        VALUES (#{userId}, #{title}, #{completed})
+    </insert>
+
+    <select id="findAll" resultType="com.study.web2.vo.TodoVo">
+        SELECT id, userId, title, completed
+        FROM Todo
+        <where>
+            <if test="userId != null">
+                AND userId = #{userId}
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <select id="findById" resultType="com.study.web2.vo.TodoVo">
+        SELECT id, userId, title, completed
+        FROM Todo
+        WHERE id = #{id}
+    </select>
+
+    <update id="updateTodo">
+        UPDATE Todo
+        SET title = #{title},
+            completed = #{completed}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteTodo">
+        DELETE FROM Todo
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

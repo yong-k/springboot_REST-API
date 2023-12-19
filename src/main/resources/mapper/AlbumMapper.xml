@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.web2.mapper.AlbumMapper">
+
+    <insert id="registerAlbum">
+        INSERT INTO Album (userId, title)
+        VALUES (#{userId}, #{title})
+    </insert>
+
+    <select id="findAll" resultType="com.study.web2.vo.AlbumVo">
+        SELECT id, userId, title
+        FROM Album
+        <where>
+            <if test="userId != null">
+                AND userId = #{userId}
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <select id="findById" resultType="com.study.web2.vo.AlbumVo">
+        SELECT id, userId, title
+        FROM Album
+        WHERE id = #{id}
+    </select>
+
+    <update id="updateAlbum">
+        UPDATE Album
+        SET title = #{title}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteAlbum">
+        DELETE FROM Album
+        WHERE id = #{id}
+    </delete>
+
+</mapper>
