@@ -8,11 +8,11 @@ import java.util.List;
 @Mapper
 public interface AlbumMapper {
 
-    int registerAlbum(AlbumVo album);
+    int createAlbum(AlbumVo album);
 
-    List<AlbumVo> findAll(Long userId);
+    List<AlbumVo> getAllAlbum(Long userId);
 
-    AlbumVo findById(Long id);
+    AlbumVo getAlbumById(Long id);
 
     int updateAlbum(AlbumVo album);
 

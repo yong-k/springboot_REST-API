@@ -8,11 +8,11 @@ import java.util.List;
 @Mapper
 public interface TodoMapper {
 
-    int registerTodo(TodoVo todo);
+    int createTodo(TodoVo todo);
 
-    List<TodoVo> findAll(Long userId);
+    List<TodoVo> getAllTodo(Long userId);
 
-    TodoVo findById(Long id);
+    TodoVo getTodoById(Long id);
 
     int updateTodo(TodoVo todo);
 

@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.study.web2.mapper.TodoMapper">
 
-    <insert id="registerTodo">
+    <insert id="createTodo">
         INSERT INTO Todo (userId, title, completed)
         VALUES (#{userId}, #{title}, #{completed})
     </insert>
 
-    <select id="findAll" resultType="com.study.web2.vo.TodoVo">
+    <select id="getAllTodo" resultType="com.study.web2.vo.TodoVo">
         SELECT id, userId, title, completed
         FROM Todo
         <where>
@@ -18,7 +18,7 @@
         ORDER BY id DESC
     </select>
 
-    <select id="findById" resultType="com.study.web2.vo.TodoVo">
+    <select id="getTodoById" resultType="com.study.web2.vo.TodoVo">
         SELECT id, userId, title, completed
         FROM Todo
         WHERE id = #{id}

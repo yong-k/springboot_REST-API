@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.study.web2.mapper.AlbumMapper">
 
-    <insert id="registerAlbum">
+    <insert id="createAlbum">
         INSERT INTO Album (userId, title)
         VALUES (#{userId}, #{title})
     </insert>
 
-    <select id="findAll" resultType="com.study.web2.vo.AlbumVo">
+    <select id="getAllAlbum" resultType="com.study.web2.vo.AlbumVo">
         SELECT id, userId, title
         FROM Album
         <where>
@@ -18,7 +18,7 @@
         ORDER BY id DESC
     </select>
 
-    <select id="findById" resultType="com.study.web2.vo.AlbumVo">
+    <select id="getAlbumById" resultType="com.study.web2.vo.AlbumVo">
         SELECT id, userId, title
         FROM Album
         WHERE id = #{id}

@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.study.web2.mapper.PhotoMapper">
 
-    <insert id="registerPhoto">
+    <insert id="createPhoto">
         INSERT INTO Photo (albumId, title, url, thumbnailUrl)
         VALUES (#{albumId}, #{title}, #{url}, #{thumbnailUrl})
     </insert>
 
-    <select id="findAll" resultType="com.study.web2.vo.PhotoVo">
+    <select id="getAllPhoto" resultType="com.study.web2.vo.PhotoVo">
         SELECT id, albumId, title, url, thumbnailUrl
         FROM Photo
         <where>
@@ -18,7 +18,7 @@
         ORDER BY id DESC
     </select>
 
-    <select id="findById" resultType="com.study.web2.vo.PhotoVo">
+    <select id="getPhotoById" resultType="com.study.web2.vo.PhotoVo">
         SELECT id, albumId, title, url, thumbnailUrl
         FROM Photo
         WHERE id = #{id}

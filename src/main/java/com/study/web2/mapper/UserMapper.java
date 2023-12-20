@@ -7,11 +7,11 @@ import java.util.List;
 
 @Mapper
 public interface UserMapper {
-    int registerUser(UserVo user);
+    int createUser(UserVo user);
 
-    List<UserVo> findAll();
+    List<UserVo> getAllUser();
 
-    UserVo findById(Long id);
+    UserVo getUserById(Long id);
 
     int updateUser(UserVo user);
 

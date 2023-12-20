@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.study.web2.mapper.PostMapper">
 
-    <insert id="registerPost">
+    <insert id="createPost">
         INSERT INTO Post (userId, title, body)
         VALUES (#{userId}, #{title}, #{body})
     </insert>
 
-    <select id="findAll" resultType="com.study.web2.vo.PostVo">
+    <select id="getAllPost" resultType="com.study.web2.vo.PostVo">
         SELECT id, userId, title, body
         FROM Post
         <where>
@@ -18,7 +18,7 @@
         ORDER BY id DESC
     </select>
 
-    <select id="findById" resultType="com.study.web2.vo.PostVo">
+    <select id="getPostById" resultType="com.study.web2.vo.PostVo">
         SELECT id, userId, title, body
         FROM Post
         WHERE id = #{id}

@@ -1,5 +1,6 @@
 package com.study.web2.service;
 
+import com.study.web2.exception.DataNotFoundException;
 import com.study.web2.mapper.UserMapper;
 import com.study.web2.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +14,19 @@ public class UserService {
     @Autowired
     UserMapper userMapper;
 
-    public void registerUser(UserVo user) {
-        userMapper.registerUser(user);
+    public void createUser(UserVo user) {
+        userMapper.createUser(user);
     }
 
-    public List<UserVo> findAll() {
-        return userMapper.findAll();
+    public List<UserVo> getAllUser() {
+        return userMapper.getAllUser();
     }
 
-    public UserVo findById(Long id) {
-        return userMapper.findById(id);
+    public UserVo getUserById(Long id) {
+        UserVo user = userMapper.getUserById(id);
+        if (user == null)
+            throw new DataNotFoundException("Not exist user: id = " + id);
+        return user;
     }
 
     public void updateUser(UserVo user) {

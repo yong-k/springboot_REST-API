@@ -1,5 +1,6 @@
 package com.study.web2.service;
 
+import com.study.web2.exception.DataNotFoundException;
 import com.study.web2.mapper.PhotoMapper;
 import com.study.web2.vo.PhotoVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +14,19 @@ public class PhotoService {
     @Autowired
     PhotoMapper photoMapper;
 
-    public void registerPhoto(PhotoVo photo) {
-        photoMapper.registerPhoto(photo);
+    public void createPhoto(PhotoVo photo) {
+        photoMapper.createPhoto(photo);
     }
 
-    public List<PhotoVo> findAll(Long albumId) {
-        return photoMapper.findAll(albumId);
+    public List<PhotoVo> getAllPhoto(Long albumId) {
+        return photoMapper.getAllPhoto(albumId);
     }
 
-    public PhotoVo findById(Long id) {
-        return photoMapper.findById(id);
+    public PhotoVo getPhotoById(Long id) {
+        PhotoVo photo = photoMapper.getPhotoById(id);
+        if (photo == null)
+            throw new DataNotFoundException("Not exist photo: id = " + id);
+        return photo;
     }
 
     public void updatePhoto(PhotoVo photo) {

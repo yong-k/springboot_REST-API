@@ -8,11 +8,11 @@ import java.util.List;
 @Mapper
 public interface CommentMapper {
 
-    int registerComment(CommentVo comment);
+    int createComment(CommentVo comment);
 
-    List<CommentVo> findAll(Long postId);
+    List<CommentVo> getAllComment(Long postId);
 
-    CommentVo findById(Long id);
+    CommentVo getCommentById(Long id);
 
     int updateComment(CommentVo comment);
 

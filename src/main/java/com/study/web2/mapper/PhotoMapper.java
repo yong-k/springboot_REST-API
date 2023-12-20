@@ -8,11 +8,11 @@ import java.util.List;
 @Mapper
 public interface PhotoMapper {
 
-    int registerPhoto(PhotoVo photo);
+    int createPhoto(PhotoVo photo);
 
-    List<PhotoVo> findAll(Long albumId);
+    List<PhotoVo> getAllPhoto(Long albumId);
 
-    PhotoVo findById(Long id);
+    PhotoVo getPhotoById(Long id);
 
     int updatePhoto(PhotoVo photo);
 

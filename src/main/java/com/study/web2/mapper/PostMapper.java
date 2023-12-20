@@ -8,11 +8,11 @@ import java.util.List;
 @Mapper
 public interface PostMapper {
 
-    int registerPost(PostVo post);
+    int createPost(PostVo post);
 
-    List<PostVo> findAll(Long userId);
+    List<PostVo> getAllPost(Long userId);
 
-    PostVo findById(Long id);
+    PostVo getPostById(Long id);
 
     int updatePost(PostVo post);
 

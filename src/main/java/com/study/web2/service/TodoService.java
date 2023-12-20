@@ -1,5 +1,6 @@
 package com.study.web2.service;
 
+import com.study.web2.exception.DataNotFoundException;
 import com.study.web2.mapper.TodoMapper;
 import com.study.web2.vo.TodoVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +14,19 @@ public class TodoService {
     @Autowired
     TodoMapper todoMapper;
 
-    public void registerTodo(TodoVo todo) {
-        todoMapper.registerTodo(todo);
+    public void createTodo(TodoVo todo) {
+        todoMapper.createTodo(todo);
     }
 
-    public List<TodoVo> findAll(Long userId) {
-        return todoMapper.findAll(userId);
+    public List<TodoVo> getAllTodo(Long userId) {
+        return todoMapper.getAllTodo(userId);
     }
 
-    public TodoVo findById(Long id) {
-        return todoMapper.findById(id);
+    public TodoVo getTodoById(Long id) {
+        TodoVo todo = todoMapper.getTodoById(id);
+        if (todo == null)
+            throw new DataNotFoundException("Not exist todo: id = " + id);
+        return todo;
     }
 
     public void updateTodo(TodoVo todo) {

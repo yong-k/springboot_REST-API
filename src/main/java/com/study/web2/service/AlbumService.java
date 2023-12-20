@@ -1,5 +1,6 @@
 package com.study.web2.service;
 
+import com.study.web2.exception.DataNotFoundException;
 import com.study.web2.mapper.AlbumMapper;
 import com.study.web2.vo.AlbumVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +14,19 @@ public class AlbumService {
     @Autowired
     AlbumMapper albumMapper;
 
-    public void registerAlbum(AlbumVo album) {
-        albumMapper.registerAlbum(album);
+    public void createAlbum(AlbumVo album) {
+        albumMapper.createAlbum(album);
     }
 
-    public List<AlbumVo> findAll(Long userId) {
-        return albumMapper.findAll(userId);
+    public List<AlbumVo> getAllAlbum(Long userId) {
+        return albumMapper.getAllAlbum(userId);
     }
 
-    public AlbumVo findById(Long id) {
-        return albumMapper.findById(id);
+    public AlbumVo getAlbumById(Long id) {
+        AlbumVo album = albumMapper.getAlbumById(id);
+        if (album == null)
+            throw new DataNotFoundException("Not exist album: id = " + id);
+        return album;
     }
 
     public void updateAlbum(AlbumVo album) {
