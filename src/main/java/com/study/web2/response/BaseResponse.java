@@ -24,5 +24,6 @@ public class BaseResponse<T> {
     public BaseResponse(Exception e) {
         this.isSuccess = false;
         this.message = (e.getLocalizedMessage() != null) ? e.getLocalizedMessage() : "Unexpected Error";
+        this.result = null;
     }
 }
