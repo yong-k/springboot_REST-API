@@ -1,7 +1,12 @@
 package com.study.web2.controller;
 
+import com.study.web2.consts.ResultCode;
+import com.study.web2.dto.CommonRespDto;
+import com.study.web2.dto.comment.CreateCommentReqDto;
+import com.study.web2.dto.comment.GetAllCommentRespDto;
+import com.study.web2.dto.comment.GetCommentRespDto;
+import com.study.web2.dto.comment.UpdateCommentReqDto;
 import com.study.web2.exception.DataNotFoundException;
-import com.study.web2.response.BaseResponse;
 import com.study.web2.service.CommentService;
 import com.study.web2.vo.CommentVo;
 import lombok.extern.slf4j.Slf4j;
@@ -9,68 +14,93 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Slf4j
 @RestController
+@RequestMapping("/api")
 public class CommentController {
 
     @Autowired
-    CommentService commentService;
+    private CommentService commentService;
 
     @PostMapping("/comment")
-    public BaseResponse<String> createComment(@RequestBody CommentVo comment) {
+    public CommonRespDto createComment(@RequestBody CreateCommentReqDto createCommentReqDto) {
+        CommonRespDto commonRespDto = new CommonRespDto();
         try {
-            commentService.createComment(comment);
-            return new BaseResponse<>("create success");
+            commentService.createComment(new CommentVo(createCommentReqDto));
         } catch (DataIntegrityViolationException e) {
-            return new BaseResponse<>(new DataIntegrityViolationException("data integrity exception"));
+            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION);
+            commonRespDto.setMessage("INSERT fail");
         } catch (Exception e) {
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setMessage("Unexpected Error");
             log.error("Error in CommentController.createComment()", e);
-            return new BaseResponse<>(e);
         }
+        return commonRespDto;
     }
 
     @GetMapping("/comment")
-    public BaseResponse<List<CommentVo>> getAllComment(@RequestParam(required = false) Long postId) {
-        return new BaseResponse<>(commentService.getAllComment(postId));
+    public GetAllCommentRespDto getAllComment(@RequestParam(required = false) Long postId) {
+        GetAllCommentRespDto getAllCommentRespDto = new GetAllCommentRespDto();
+        try {
+            getAllCommentRespDto.setCommentList(commentService.getAllComment(postId));
+        } catch (Exception e) {
+            getAllCommentRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            getAllCommentRespDto.setMessage("Unexpected Error");
+            log.error("Error in CommentController.getAllComment()", e);
+        }
+        return getAllCommentRespDto;
     }
 
     @GetMapping("/comment/{id}")
-    public BaseResponse<CommentVo> getCommentById(@PathVariable Long id) {
+    public GetCommentRespDto getCommentById(@PathVariable Long id) {
+        GetCommentRespDto getCommentRespDto = new GetCommentRespDto();
         try {
-            CommentVo comment = commentService.getCommentById(id);
-            return new BaseResponse<>(comment);
+            getCommentRespDto.setComment(commentService.getCommentById(id));
         } catch (DataNotFoundException e) {
-            return new BaseResponse<>(e);
+            getCommentRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            getCommentRespDto.setMessage(e.getLocalizedMessage());
         } catch (Exception e) {
+            getCommentRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            getCommentRespDto.setMessage("Unexpected Error");
             log.error("Error in CommentController.getCommentById()", e);
-            return new BaseResponse<>(e);
         }
+        return getCommentRespDto;
     }
 
     @PutMapping("/comment/{id}")
-    public BaseResponse<String> updateComment(@PathVariable Long id, @RequestBody CommentVo comment) {
+    public CommonRespDto updateComment(@PathVariable Long id, @RequestBody UpdateCommentReqDto updateCommentReqDto) {
+        CommonRespDto commonRespDto = new CommonRespDto();
         try {
+            CommentVo comment = new CommentVo(updateCommentReqDto);
             comment.setId(id);
             commentService.updateComment(comment);
-            return new BaseResponse<>("update success");
+        } catch (DataNotFoundException e) {
+            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            commonRespDto.setMessage(e.getLocalizedMessage());
         } catch (DataIntegrityViolationException e) {
-            return new BaseResponse<>(new DataIntegrityViolationException("data integrity exception"));
+            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION);
+            commonRespDto.setMessage("UPDATE fail");
         } catch (Exception e) {
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setMessage("Unexpected Error");
             log.error("Error in CommentController.updateComment()", e);
-            return new BaseResponse<>(e);
         }
+        return commonRespDto;
     }
 
     @DeleteMapping("/comment/{id}")
-    public BaseResponse<String> deleteComment(@PathVariable Long id) {
+    public CommonRespDto deleteComment(@PathVariable Long id) {
+        CommonRespDto commonRespDto = new CommonRespDto();
         try {
             commentService.deleteComment(id);
-            return new BaseResponse<>("delete success");
+        } catch (DataNotFoundException e) {
+            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            commonRespDto.setMessage(e.getLocalizedMessage());
         } catch (Exception e) {
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setMessage("Unexpected Error");
             log.error("Error in CommentController.deleteComment()", e);
-            return new BaseResponse<>(e);
         }
+        return commonRespDto;
     }
 }

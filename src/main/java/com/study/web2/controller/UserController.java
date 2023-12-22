@@ -1,7 +1,12 @@
 package com.study.web2.controller;
 
+import com.study.web2.consts.ResultCode;
+import com.study.web2.dto.*;
+import com.study.web2.dto.user.CreateUserReqDto;
+import com.study.web2.dto.user.GetAllUserRespDto;
+import com.study.web2.dto.user.GetUserRespDto;
+import com.study.web2.dto.user.UpdateUserReqDto;
 import com.study.web2.exception.DataNotFoundException;
-import com.study.web2.response.BaseResponse;
 import com.study.web2.service.UserService;
 import com.study.web2.vo.UserVo;
 import lombok.extern.slf4j.Slf4j;
@@ -9,68 +14,93 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Slf4j
 @RestController
+@RequestMapping("/api")
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @PostMapping("/user")
-    public BaseResponse<String> createUser(@RequestBody UserVo user) {
+    public CommonRespDto createUser(@RequestBody CreateUserReqDto createUserReqDto) {
+        CommonRespDto commonRespDto = new CommonRespDto();
         try {
-            userService.createUser(user);
-            return new BaseResponse<>("create success");
+            userService.createUser(new UserVo(createUserReqDto));
         } catch (DataIntegrityViolationException e) {
-            return new BaseResponse<>(new DataIntegrityViolationException("data integrity exception"));
+            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION);
+            commonRespDto.setMessage("INSERT fail");
         } catch (Exception e) {
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setMessage("Unexpected Error");
             log.error("Error in UserController.createUser()", e);
-            return new BaseResponse<>(e);
         }
+        return commonRespDto;
     }
 
     @GetMapping("/user")
-    public BaseResponse<List<UserVo>> getAllUser() {
-        return new BaseResponse<>(userService.getAllUser());
+    public GetAllUserRespDto getAllUser() {
+        GetAllUserRespDto getAllUserRespDto = new GetAllUserRespDto();
+        try {
+            getAllUserRespDto.setUserList(userService.getAllUser());
+        } catch (Exception e) {
+            getAllUserRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            getAllUserRespDto.setMessage("Unexpected Error");
+            log.error("Error in UserController.getAllUser()", e);
+        }
+        return getAllUserRespDto;
     }
 
     @GetMapping("/user/{id}")
-    public BaseResponse<UserVo> getUserById(@PathVariable Long id) {
+    public GetUserRespDto getUserById(@PathVariable Long id) {
+        GetUserRespDto getUserRespDto = new GetUserRespDto();
         try {
-            UserVo user = userService.getUserById(id);
-            return new BaseResponse<>(user);
+            getUserRespDto.setUser(userService.getUserById(id));
         } catch (DataNotFoundException e) {
-            return new BaseResponse<>(e);
+            getUserRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            getUserRespDto.setMessage(e.getLocalizedMessage());
         } catch (Exception e) {
+            getUserRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            getUserRespDto.setMessage("Unexpected Error");
             log.error("Error in UserController.getUserById()", e);
-            return new BaseResponse<>(e);
         }
+        return getUserRespDto;
     }
 
     @PutMapping("/user/{id}")
-    public BaseResponse<String> updateUser(@PathVariable Long id, @RequestBody UserVo user) {
+    public CommonRespDto updateUser(@PathVariable Long id, @RequestBody UpdateUserReqDto updateUserReqDto) {
+        CommonRespDto commonRespDto = new CommonRespDto();
         try {
+            UserVo user = new UserVo(updateUserReqDto);
             user.setId(id);
             userService.updateUser(user);
-            return new BaseResponse<>("update success");
+        } catch (DataNotFoundException e) {
+            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            commonRespDto.setMessage(e.getLocalizedMessage());
         } catch (DataIntegrityViolationException e) {
-            return new BaseResponse<>(new DataIntegrityViolationException("data integrity exception"));
+            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION);
+            commonRespDto.setMessage("UPDATE fail");
         } catch (Exception e) {
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setMessage("Unexpected Error");
             log.error("Error in UserController.updateUser()", e);
-            return new BaseResponse<>(e);
         }
+        return commonRespDto;
     }
 
     @DeleteMapping("/user/{id}")
-    public BaseResponse<String> deleteUser(@PathVariable Long id) {
+    public CommonRespDto deleteUser(@PathVariable Long id) {
+        CommonRespDto commonRespDto = new CommonRespDto();
         try {
             userService.deleteUser(id);
-            return new BaseResponse<>("delete success");
+        } catch (DataNotFoundException e) {
+            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            commonRespDto.setMessage(e.getLocalizedMessage());
         } catch (Exception e) {
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setMessage("Unexpected Error");
             log.error("Error in UserController.deleteUser()", e);
-            return new BaseResponse<>(e);
         }
+        return commonRespDto;
     }
 }

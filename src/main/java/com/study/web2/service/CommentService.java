@@ -12,7 +12,7 @@ import java.util.List;
 public class CommentService {
 
     @Autowired
-    CommentMapper commentMapper;
+    private CommentMapper commentMapper;
 
     public void createComment(CommentVo comment) {
         commentMapper.createComment(comment);
@@ -30,10 +30,14 @@ public class CommentService {
     }
 
     public void updateComment(CommentVo comment) {
-        commentMapper.updateComment(comment);
+        int result = commentMapper.updateComment(comment);
+        if (result < 1)
+            throw new DataNotFoundException("[UPDATE fail] Not exist comment: id = " + comment.getId());
     }
 
     public void deleteComment(Long id) {
-        commentMapper.deleteComment(id);
+        int result = commentMapper.deleteComment(id);
+        if (result < 1)
+            throw new DataNotFoundException("[DELETE fail] Not exist comment: id = " + id);
     }
 }

@@ -1,7 +1,12 @@
 package com.study.web2.controller;
 
+import com.study.web2.consts.ResultCode;
+import com.study.web2.dto.CommonRespDto;
+import com.study.web2.dto.todo.CreateTodoReqDto;
+import com.study.web2.dto.todo.GetAllTodoRespDto;
+import com.study.web2.dto.todo.GetTodoRespDto;
+import com.study.web2.dto.todo.UpdateTodoReqDto;
 import com.study.web2.exception.DataNotFoundException;
-import com.study.web2.response.BaseResponse;
 import com.study.web2.service.TodoService;
 import com.study.web2.vo.TodoVo;
 import lombok.extern.slf4j.Slf4j;
@@ -9,68 +14,93 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Slf4j
 @RestController
+@RequestMapping("/api")
 public class TodoController {
 
     @Autowired
-    TodoService todoService;
+    private TodoService todoService;
 
     @PostMapping("/todo")
-    public BaseResponse<String> createTodo(@RequestBody TodoVo todo) {
+    public CommonRespDto createTodo(@RequestBody CreateTodoReqDto createTodoReqDto) {
+        CommonRespDto commonRespDto = new CommonRespDto();
         try {
-            todoService.createTodo(todo);
-            return new BaseResponse<>("create success");
+            todoService.createTodo(new TodoVo(createTodoReqDto));
         } catch (DataIntegrityViolationException e) {
-            return new BaseResponse<>(new DataIntegrityViolationException("data integrity exception"));
+            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION);
+            commonRespDto.setMessage("INSERT fail");
         } catch (Exception e) {
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setMessage("Unexpected Error");
             log.error("Error in TodoController.createTodo()", e);
-            return new BaseResponse<>(e);
         }
+        return commonRespDto;
     }
 
     @GetMapping("/todo")
-    public BaseResponse<List<TodoVo>> getAllTodo(@RequestParam(required = false) Long userId) {
-        return new BaseResponse<>(todoService.getAllTodo(userId));
+    public GetAllTodoRespDto getAllTodo(@RequestParam(required = false) Long userId) {
+        GetAllTodoRespDto getAllTodoRespDto = new GetAllTodoRespDto();
+        try {
+            getAllTodoRespDto.setTodoList(todoService.getAllTodo(userId));
+        } catch (Exception e) {
+            getAllTodoRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            getAllTodoRespDto.setMessage("Unexpected Error");
+            log.error("Error in TodoController.getAllTodo()", e);
+        }
+        return getAllTodoRespDto;
     }
 
     @GetMapping("/todo/{id}")
-    public BaseResponse<TodoVo> getTodoById(@PathVariable Long id) {
+    public GetTodoRespDto getTodoById(@PathVariable Long id) {
+        GetTodoRespDto getTodoRespDto = new GetTodoRespDto();
         try {
-            TodoVo todo = todoService.getTodoById(id);
-            return new BaseResponse<>(todo);
+            getTodoRespDto.setTodo(todoService.getTodoById(id));
         } catch (DataNotFoundException e) {
-            return new BaseResponse<>(e);
+            getTodoRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            getTodoRespDto.setMessage(e.getLocalizedMessage());
         } catch (Exception e) {
+            getTodoRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            getTodoRespDto.setMessage("Unexpected Error");
             log.error("Error in TodoController.getTodoById()", e);
-            return new BaseResponse<>(e);
         }
+        return getTodoRespDto;
     }
 
     @PutMapping("/todo/{id}")
-    public BaseResponse<String> updateTodo(@PathVariable Long id, @RequestBody TodoVo todo) {
+    public CommonRespDto updateTodo(@PathVariable Long id, @RequestBody UpdateTodoReqDto updateTodoReqDto) {
+        CommonRespDto commonRespDto = new CommonRespDto();
         try {
+            TodoVo todo = new TodoVo(updateTodoReqDto);
             todo.setId(id);
             todoService.updateTodo(todo);
-            return new BaseResponse<>("update success");
+        } catch (DataNotFoundException e) {
+            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            commonRespDto.setMessage(e.getLocalizedMessage());
         } catch (DataIntegrityViolationException e) {
-            return new BaseResponse<>(new DataIntegrityViolationException("data integrity exception"));
+            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION);
+            commonRespDto.setMessage("UPDATE fail");
         } catch (Exception e) {
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setMessage("Unexpected Error");
             log.error("Error in TodoController.updateTodo()", e);
-            return new BaseResponse<>(e);
         }
+        return commonRespDto;
     }
 
     @DeleteMapping("/todo/{id}")
-    public BaseResponse<String> deleteTodo(@PathVariable Long id) {
+    public CommonRespDto deleteTodo(@PathVariable Long id) {
+        CommonRespDto commonRespDto = new CommonRespDto();
         try {
             todoService.deleteTodo(id);
-            return new BaseResponse<>("delete success");
+        } catch (DataNotFoundException e) {
+            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            commonRespDto.setMessage(e.getLocalizedMessage());
         } catch (Exception e) {
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setMessage("Unexpected Error");
             log.error("Error in TodoController.deleteTodo()", e);
-            return new BaseResponse<>(e);
         }
+        return commonRespDto;
     }
 }

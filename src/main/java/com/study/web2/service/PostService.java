@@ -12,7 +12,7 @@ import java.util.List;
 public class PostService {
 
     @Autowired
-    PostMapper postMapper;
+    private PostMapper postMapper;
 
     public void createPost(PostVo post) {
         postMapper.createPost(post);
@@ -30,10 +30,14 @@ public class PostService {
     }
 
     public void updatePost(PostVo post) {
-        postMapper.updatePost(post);
+        int result = postMapper.updatePost(post);
+        if (result < 1)
+            throw new DataNotFoundException("[UPDATE fail] Not exist post: id = " + post.getId());
     }
 
     public void deletePost(Long id) {
-        postMapper.deletePost(id);
+        int result = postMapper.deletePost(id);
+        if (result < 1)
+            throw new DataNotFoundException("[DELETE fail] Not exist post: id = " + id);
     }
 }

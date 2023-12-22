@@ -12,7 +12,7 @@ import java.util.List;
 public class PhotoService {
 
     @Autowired
-    PhotoMapper photoMapper;
+    private PhotoMapper photoMapper;
 
     public void createPhoto(PhotoVo photo) {
         photoMapper.createPhoto(photo);
@@ -30,10 +30,14 @@ public class PhotoService {
     }
 
     public void updatePhoto(PhotoVo photo) {
-        photoMapper.updatePhoto(photo);
+        int result = photoMapper.updatePhoto(photo);
+        if (result < 1)
+            throw new DataNotFoundException("[UPDATE fail] Not exist photo: id = " + photo.getId());
     }
 
     public void deletePhoto(Long id) {
-        photoMapper.deletePhoto(id);
+        int result = photoMapper.deletePhoto(id);
+        if (result < 1)
+            throw new DataNotFoundException("[DELETE fail] Not exist photo: id = " + id);
     }
 }

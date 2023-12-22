@@ -12,7 +12,7 @@ import java.util.List;
 public class AlbumService {
 
     @Autowired
-    AlbumMapper albumMapper;
+    private AlbumMapper albumMapper;
 
     public void createAlbum(AlbumVo album) {
         albumMapper.createAlbum(album);
@@ -30,10 +30,14 @@ public class AlbumService {
     }
 
     public void updateAlbum(AlbumVo album) {
-        albumMapper.updateAlbum(album);
+        int result = albumMapper.updateAlbum(album);
+        if (result < 1)
+            throw new DataNotFoundException("[UPDATE fail] Not exist album: id = " + album.getId());
     }
 
     public void deleteAlbum(Long id) {
-        albumMapper.deleteAlbum(id);
+        int result = albumMapper.deleteAlbum(id);
+        if (result < 1)
+            throw new DataNotFoundException("[DELETE fail] Not exist album: id = " + id);
     }
 }

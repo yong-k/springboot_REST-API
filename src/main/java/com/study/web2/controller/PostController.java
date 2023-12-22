@@ -1,7 +1,12 @@
 package com.study.web2.controller;
 
+import com.study.web2.consts.ResultCode;
+import com.study.web2.dto.CommonRespDto;
+import com.study.web2.dto.post.CreatePostReqDto;
+import com.study.web2.dto.post.GetAllPostRespDto;
+import com.study.web2.dto.post.GetPostRespDto;
+import com.study.web2.dto.post.UpdatePostReqDto;
 import com.study.web2.exception.DataNotFoundException;
-import com.study.web2.response.BaseResponse;
 import com.study.web2.service.PostService;
 import com.study.web2.vo.PostVo;
 import lombok.extern.slf4j.Slf4j;
@@ -9,68 +14,93 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Slf4j
 @RestController
+@RequestMapping("/api")
 public class PostController {
 
     @Autowired
-    PostService postService;
+    private PostService postService;
 
     @PostMapping("/post")
-    public BaseResponse<String> createPost(@RequestBody PostVo post) {
+    public CommonRespDto createPost(@RequestBody CreatePostReqDto createPostReqDto) {
+        CommonRespDto commonRespDto = new CommonRespDto();
         try {
-            postService.createPost(post);
-            return new BaseResponse<>("create success");
+            postService.createPost(new PostVo(createPostReqDto));
         } catch (DataIntegrityViolationException e) {
-            return new BaseResponse<>(new DataIntegrityViolationException("data integrity exception"));
+            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION);
+            commonRespDto.setMessage("INSERT fail");
         } catch (Exception e) {
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setMessage("Unexpected Error");
             log.error("Error in PostController.createPost()", e);
-            return new BaseResponse<>(e);
         }
+        return commonRespDto;
     }
 
     @GetMapping("/post")
-    public BaseResponse<List<PostVo>> getAllPost(@RequestParam(required = false) Long userId) {
-        return new BaseResponse<>(postService.getAllPost(userId));
+    public GetAllPostRespDto getAllPost(@RequestParam(required = false) Long userId) {
+        GetAllPostRespDto getAllPostRespDto = new GetAllPostRespDto();
+        try {
+            getAllPostRespDto.setPostList(postService.getAllPost(userId));
+        } catch (Exception e) {
+            getAllPostRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            getAllPostRespDto.setMessage("Unexpected Error");
+            log.error("Error in PostController.getAllPost()", e);
+        }
+        return getAllPostRespDto;
     }
 
     @GetMapping("/post/{id}")
-    public BaseResponse<PostVo> getPostById(@PathVariable Long id) {
+    public GetPostRespDto getPostById(@PathVariable Long id) {
+        GetPostRespDto getPostRespDto = new GetPostRespDto();
         try {
-            PostVo post = postService.getPostById(id);
-            return new BaseResponse<>(post);
+            getPostRespDto.setPost(postService.getPostById(id));
         } catch (DataNotFoundException e) {
-            return new BaseResponse<>(e);
+            getPostRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            getPostRespDto.setMessage(e.getLocalizedMessage());
         } catch (Exception e) {
+            getPostRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            getPostRespDto.setMessage("Unexpected Error");
             log.error("Error in PostController.getPostById()", e);
-            return new BaseResponse<>(e);
         }
+        return getPostRespDto;
     }
 
     @PutMapping("/post/{id}")
-    public BaseResponse<String> updatePost(@PathVariable Long id, @RequestBody PostVo post) {
+    public CommonRespDto updatePost(@PathVariable Long id, @RequestBody UpdatePostReqDto updatePostReqDto) {
+        CommonRespDto commonRespDto = new CommonRespDto();
         try {
+            PostVo post = new PostVo(updatePostReqDto);
             post.setId(id);
             postService.updatePost(post);
-            return new BaseResponse<>("update success");
+        } catch (DataNotFoundException e) {
+            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            commonRespDto.setMessage(e.getLocalizedMessage());
         } catch (DataIntegrityViolationException e) {
-            return new BaseResponse<>(new DataIntegrityViolationException("data integrity exception"));
+            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION);
+            commonRespDto.setMessage("UPDATE fail");
         } catch (Exception e) {
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setMessage("Unexpected Error");
             log.error("Error in PostController.updatePost()", e);
-            return new BaseResponse<>(e);
         }
+        return commonRespDto;
     }
 
     @DeleteMapping("/post/{id}")
-    public BaseResponse<String> deletePost(@PathVariable Long id) {
+    public CommonRespDto deletePost(@PathVariable Long id) {
+        CommonRespDto commonRespDto = new CommonRespDto();
         try {
             postService.deletePost(id);
-            return new BaseResponse<>("delete success");
+        } catch (DataNotFoundException e) {
+            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            commonRespDto.setMessage(e.getLocalizedMessage());
         } catch (Exception e) {
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setMessage("Unexpected Error");
             log.error("Error in UserController.deletePost()", e);
-            return new BaseResponse<>(e);
         }
+        return commonRespDto;
     }
 }

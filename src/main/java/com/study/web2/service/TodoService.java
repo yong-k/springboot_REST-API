@@ -12,7 +12,7 @@ import java.util.List;
 public class TodoService {
 
     @Autowired
-    TodoMapper todoMapper;
+    private TodoMapper todoMapper;
 
     public void createTodo(TodoVo todo) {
         todoMapper.createTodo(todo);
@@ -30,10 +30,14 @@ public class TodoService {
     }
 
     public void updateTodo(TodoVo todo) {
-        todoMapper.updateTodo(todo);
+        int result = todoMapper.updateTodo(todo);
+        if (result < 1)
+            throw new DataNotFoundException("[UPDATE fail] Not exist todo: id = " + todo.getId());
     }
 
     public void deleteTodo(Long id) {
-        todoMapper.deleteTodo(id);
+        int result = todoMapper.deleteTodo(id);
+        if (result < 1)
+            throw new DataNotFoundException("[DELETE fail] Not exist todo: id = " + id);
     }
 }

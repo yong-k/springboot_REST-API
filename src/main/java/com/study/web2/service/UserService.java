@@ -12,7 +12,7 @@ import java.util.List;
 public class UserService {
 
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
 
     public void createUser(UserVo user) {
         userMapper.createUser(user);
@@ -30,10 +30,14 @@ public class UserService {
     }
 
     public void updateUser(UserVo user) {
-        userMapper.updateUser(user);
+        int result = userMapper.updateUser(user);
+        if (result < 1)
+            throw new DataNotFoundException("[UPDATE fail] Not exist user: id = " + user.getId());
     }
 
     public void deleteUser(Long id) {
-        userMapper.deleteUser(id);
+        int result = userMapper.deleteUser(id);
+        if (result < 1)
+            throw new DataNotFoundException("[DELETE fail] Not exist user: id = " + id);
     }
 }
