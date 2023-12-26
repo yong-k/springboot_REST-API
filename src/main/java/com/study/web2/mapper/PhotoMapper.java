@@ -10,7 +10,9 @@ public interface PhotoMapper {
 
     int createPhoto(PhotoVo photo);
 
-    List<PhotoVo> getAllPhoto(Long albumId);
+    List<PhotoVo> getAllPhoto(int pageNum, int numOfRows, Long albumId, String title);
+
+    int countPhoto(Long albumId, String title);
 
     PhotoVo getPhotoById(Long id);
 

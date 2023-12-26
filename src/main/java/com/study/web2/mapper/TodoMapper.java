@@ -10,7 +10,9 @@ public interface TodoMapper {
 
     int createTodo(TodoVo todo);
 
-    List<TodoVo> getAllTodo(Long userId);
+    List<TodoVo> getAllTodo(int pageNum, int numOfRows, Long userId, String title, Integer completed);
+
+    int countTodo(Long userId, String title, Integer completed);
 
     TodoVo getTodoById(Long id);
 

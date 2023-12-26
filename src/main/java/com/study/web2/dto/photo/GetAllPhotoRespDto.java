@@ -2,6 +2,7 @@ package com.study.web2.dto.photo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.study.web2.consts.ResultCode;
+import com.study.web2.utils.Pagination;
 import com.study.web2.vo.PhotoVo;
 import lombok.Data;
 
@@ -13,4 +14,5 @@ public class GetAllPhotoRespDto {
     private ResultCode code;
     private String message;
     private List<PhotoVo> photoList;
+    private Pagination page;
 }

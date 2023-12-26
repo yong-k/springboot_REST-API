@@ -12,10 +12,39 @@
         FROM Comment
         <where>
             <if test="postId != null">
-                AND postId = #{postId}
+                postId = #{postId}
+            </if>
+            <if test="name != null">
+                AND name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="email != null">
+                AND email LIKE CONCAT('%', #{email}, '%')
+            </if>
+            <if test="body != null">
+                AND body LIKE CONCAT('%', #{body}, '%')
             </if>
         </where>
         ORDER BY id DESC
+        LIMIT #{numOfRows} OFFSET #{pageNum}
+    </select>
+
+    <select id="countComment" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM Comment
+        <where>
+            <if test="postId != null">
+                postId = #{postId}
+            </if>
+            <if test="name != null">
+                AND name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="email != null">
+                AND email LIKE CONCAT('%', #{email}, '%')
+            </if>
+            <if test="body != null">
+                AND body LIKE CONCAT('%', #{body}, '%')
+            </if>
+        </where>
     </select>
 
     <select id="getCommentById" resultType="com.study.web2.vo.CommentVo">

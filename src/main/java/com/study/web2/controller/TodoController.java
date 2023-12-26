@@ -8,6 +8,7 @@ import com.study.web2.dto.todo.GetTodoRespDto;
 import com.study.web2.dto.todo.UpdateTodoReqDto;
 import com.study.web2.exception.DataNotFoundException;
 import com.study.web2.service.TodoService;
+import com.study.web2.utils.Pagination;
 import com.study.web2.vo.TodoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +40,16 @@ public class TodoController {
     }
 
     @GetMapping("/todo")
-    public GetAllTodoRespDto getAllTodo(@RequestParam(required = false) Long userId) {
+    public GetAllTodoRespDto getAllTodo(@RequestParam(required = false) Long userId,
+                                        @RequestParam(required = false) String title,
+                                        @RequestParam(required = false) Integer completed,
+                                        @RequestParam(required = false, defaultValue = "1") int pageNum,
+                                        @RequestParam(required = false, defaultValue = "10") int numOfRows) {
         GetAllTodoRespDto getAllTodoRespDto = new GetAllTodoRespDto();
         try {
-            getAllTodoRespDto.setTodoList(todoService.getAllTodo(userId));
+            int totalDataCount = todoService.countTodo(userId, title, completed);
+            getAllTodoRespDto.setPage(new Pagination(totalDataCount, numOfRows, pageNum));
+            getAllTodoRespDto.setTodoList(todoService.getAllTodo(pageNum, numOfRows, userId, title, completed));
         } catch (Exception e) {
             getAllTodoRespDto.setCode(ResultCode.UNKNOWN_ERROR);
             getAllTodoRespDto.setMessage("Unexpected Error");

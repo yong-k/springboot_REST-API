@@ -12,10 +12,33 @@
         FROM Post
         <where>
             <if test="userId != null">
-                AND userId = #{userId}
+                userId = #{userId}
+            </if>
+            <if test="title != null">
+                AND title LIKE CONCAT('%', #{title}, '%')
+            </if>
+            <if test="body != null">
+                AND body LIKE CONCAT('%', #{body}, '%')
             </if>
         </where>
         ORDER BY id DESC
+        LIMIT #{numOfRows} OFFSET #{pageNum}
+    </select>
+
+    <select id="countPost" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM Post
+        <where>
+            <if test="userId != null">
+                userId = #{userId}
+            </if>
+            <if test="title != null">
+                AND title LIKE CONCAT('%', #{title}, '%')
+            </if>
+            <if test="body != null">
+                AND body LIKE CONCAT('%', #{body}, '%')
+            </if>
+        </where>
     </select>
 
     <select id="getPostById" resultType="com.study.web2.vo.PostVo">

@@ -8,6 +8,7 @@ import com.study.web2.dto.user.GetUserRespDto;
 import com.study.web2.dto.user.UpdateUserReqDto;
 import com.study.web2.exception.DataNotFoundException;
 import com.study.web2.service.UserService;
+import com.study.web2.utils.Pagination;
 import com.study.web2.vo.UserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +40,15 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public GetAllUserRespDto getAllUser() {
+    public GetAllUserRespDto getAllUser(@RequestParam(required = false) String username,
+                                        @RequestParam(required = false) String email,
+                                        @RequestParam(required = false, defaultValue = "1") int pageNum,
+                                        @RequestParam(required = false, defaultValue = "10") int numOfRows) {
         GetAllUserRespDto getAllUserRespDto = new GetAllUserRespDto();
         try {
-            getAllUserRespDto.setUserList(userService.getAllUser());
+            int totalDataCount = userService.countUser(username, email);
+            getAllUserRespDto.setPage(new Pagination(totalDataCount, numOfRows, pageNum));
+            getAllUserRespDto.setUserList(userService.getAllUser(pageNum, numOfRows, username, email));
         } catch (Exception e) {
             getAllUserRespDto.setCode(ResultCode.UNKNOWN_ERROR);
             getAllUserRespDto.setMessage("Unexpected Error");

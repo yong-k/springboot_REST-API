@@ -10,7 +10,9 @@ public interface PostMapper {
 
     int createPost(PostVo post);
 
-    List<PostVo> getAllPost(Long userId);
+    List<PostVo> getAllPost(int pageNum, int numOfRows, Long userId, String title, String body);
+
+    int countPost(Long userId, String title, String body);
 
     PostVo getPostById(Long id);
 

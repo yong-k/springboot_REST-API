@@ -18,8 +18,13 @@ public class UserService {
         userMapper.createUser(user);
     }
 
-    public List<UserVo> getAllUser() {
-        return userMapper.getAllUser();
+    public List<UserVo> getAllUser(int pageNum, int numOfRows, String username, String email) {
+        pageNum = numOfRows * (pageNum - 1);
+        return userMapper.getAllUser(pageNum, numOfRows, username, email);
+    }
+
+    public int countUser(String username, String email) {
+        return userMapper.countUser(username, email);
     }
 
     public UserVo getUserById(Long id) {

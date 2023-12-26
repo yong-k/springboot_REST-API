@@ -12,10 +12,27 @@
         FROM Photo
         <where>
             <if test="albumId != null">
-                AND albumId = #{albumId}
+                albumId = #{albumId}
+            </if>
+            <if test="title != null">
+                AND title LIKE CONCAT('%', #{title}, '%')
             </if>
         </where>
         ORDER BY id DESC
+        LIMIT #{numOfRows} OFFSET #{pageNum}
+    </select>
+
+    <select id="countPhoto" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM Photo
+        <where>
+            <if test="albumId != null">
+                albumId = #{albumId}
+            </if>
+            <if test="title != null">
+                AND title LIKE CONCAT('%', #{title}, '%')
+            </if>
+        </where>
     </select>
 
     <select id="getPhotoById" resultType="com.study.web2.vo.PhotoVo">

@@ -18,8 +18,13 @@ public class PhotoService {
         photoMapper.createPhoto(photo);
     }
 
-    public List<PhotoVo> getAllPhoto(Long albumId) {
-        return photoMapper.getAllPhoto(albumId);
+    public List<PhotoVo> getAllPhoto(int pageNum, int numOfRows, Long albumId, String title) {
+        pageNum = numOfRows * (pageNum - 1);
+        return photoMapper.getAllPhoto(pageNum, numOfRows, albumId, title);
+    }
+
+    public int countPhoto(Long albumId, String title) {
+        return photoMapper.countPhoto(albumId, title);
     }
 
     public PhotoVo getPhotoById(Long id) {

@@ -10,7 +10,9 @@ public interface CommentMapper {
 
     int createComment(CommentVo comment);
 
-    List<CommentVo> getAllComment(Long postId);
+    List<CommentVo> getAllComment(int pageNum, int numOfRows, Long postId, String name, String email, String body);
+
+    int countComment(Long postId, String name, String email, String body);
 
     CommentVo getCommentById(Long id);
 

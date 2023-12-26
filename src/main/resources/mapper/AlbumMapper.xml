@@ -12,10 +12,27 @@
         FROM Album
         <where>
             <if test="userId != null">
-                AND userId = #{userId}
+                userId = #{userId}
+            </if>
+            <if test="title != null">
+                AND title LIKE CONCAT('%', #{title}, '%')
             </if>
         </where>
         ORDER BY id DESC
+        LIMIT #{numOfRows} OFFSET #{pageNum}
+    </select>
+
+    <select id="countAlbum" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM Album
+        <where>
+            <if test="userId != null">
+                userId = #{userId}
+            </if>
+            <if test="title != null">
+                AND title LIKE CONCAT('%', #{title}, '%')
+            </if>
+        </where>
     </select>
 
     <select id="getAlbumById" resultType="com.study.web2.vo.AlbumVo">

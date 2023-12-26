@@ -10,7 +10,29 @@
     <select id="getAllUser" resultType="com.study.web2.vo.UserVo">
         SELECT id, name, username, email, password, address, phone, website, company
         FROM User
+        <where>
+            <if test="username != null">
+                username LIKE CONCAT('%', #{username}, '%')
+            </if>
+            <if test="email != null">
+                AND email LIKE CONCAT('%', #{email}, '%')
+            </if>
+        </where>
         ORDER BY id DESC
+        LIMIT #{numOfRows} OFFSET #{pageNum}
+    </select>
+
+    <select id="countUser" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM User
+        <where>
+            <if test="username != null">
+                username LIKE CONCAT('%', #{username}, '%')
+            </if>
+            <if test="email != null">
+                AND email LIKE CONCAT('%', #{email}, '%')
+            </if>
+        </where>
     </select>
 
     <select id="getUserById" resultType="com.study.web2.vo.UserVo">

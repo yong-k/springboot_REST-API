@@ -18,8 +18,13 @@ public class PostService {
         postMapper.createPost(post);
     }
 
-    public List<PostVo> getAllPost(Long userId) {
-        return postMapper.getAllPost(userId);
+    public List<PostVo> getAllPost(int pageNum, int numOfRows, Long userId, String title, String body) {
+        pageNum = numOfRows * (pageNum - 1);
+        return postMapper.getAllPost(pageNum, numOfRows, userId, title, body);
+    }
+
+    public int countPost(Long userId, String title, String body) {
+        return postMapper.countPost(userId, title, body);
     }
 
     public PostVo getPostById(Long id) {

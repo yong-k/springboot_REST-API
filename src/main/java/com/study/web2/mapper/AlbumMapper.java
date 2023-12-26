@@ -10,7 +10,9 @@ public interface AlbumMapper {
 
     int createAlbum(AlbumVo album);
 
-    List<AlbumVo> getAllAlbum(Long userId);
+    List<AlbumVo> getAllAlbum(int pageNum, int numOfRows, Long userId, String title);
+
+    int countAlbum(Long userId, String title);
 
     AlbumVo getAlbumById(Long id);
 

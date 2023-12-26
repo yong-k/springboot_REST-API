@@ -18,8 +18,13 @@ public class AlbumService {
         albumMapper.createAlbum(album);
     }
 
-    public List<AlbumVo> getAllAlbum(Long userId) {
-        return albumMapper.getAllAlbum(userId);
+    public List<AlbumVo> getAllAlbum(int pageNum, int numOfRows, Long userId, String title) {
+        pageNum = numOfRows * (pageNum - 1);
+        return albumMapper.getAllAlbum(pageNum, numOfRows, userId, title);
+    }
+
+    public int countAlbum(Long userId, String title) {
+        return albumMapper.countAlbum(userId, title);
     }
 
     public AlbumVo getAlbumById(Long id) {

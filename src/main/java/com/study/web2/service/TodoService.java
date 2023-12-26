@@ -18,8 +18,13 @@ public class TodoService {
         todoMapper.createTodo(todo);
     }
 
-    public List<TodoVo> getAllTodo(Long userId) {
-        return todoMapper.getAllTodo(userId);
+    public List<TodoVo> getAllTodo(int pageNum, int numOfRows, Long userId, String title, Integer completed) {
+        pageNum = numOfRows * (pageNum - 1);
+        return todoMapper.getAllTodo(pageNum, numOfRows, userId, title, completed);
+    }
+
+    public int countTodo(Long userId, String title, Integer completed) {
+        return todoMapper.countTodo(userId, title, completed);
     }
 
     public TodoVo getTodoById(Long id) {

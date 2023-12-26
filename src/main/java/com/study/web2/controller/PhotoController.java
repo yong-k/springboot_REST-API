@@ -8,6 +8,7 @@ import com.study.web2.dto.photo.GetPhotoRespDto;
 import com.study.web2.dto.photo.UpdatePhotoReqDto;
 import com.study.web2.exception.DataNotFoundException;
 import com.study.web2.service.PhotoService;
+import com.study.web2.utils.Pagination;
 import com.study.web2.vo.PhotoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +40,15 @@ public class PhotoController {
     }
 
     @GetMapping("/photo")
-    public GetAllPhotoRespDto getAllPhoto(@RequestParam(required = false) Long albumId) {
+    public GetAllPhotoRespDto getAllPhoto(@RequestParam(required = false) Long albumId,
+                                          @RequestParam(required = false) String title,
+                                          @RequestParam(required = false, defaultValue = "1") int pageNum,
+                                          @RequestParam(required = false, defaultValue = "10") int numOfRows) {
         GetAllPhotoRespDto getAllPhotoRespDto = new GetAllPhotoRespDto();
         try {
-            getAllPhotoRespDto.setPhotoList(photoService.getAllPhoto(albumId));
+            int totalDataCount = photoService.countPhoto(albumId, title);
+            getAllPhotoRespDto.setPage(new Pagination(totalDataCount, numOfRows, pageNum));
+            getAllPhotoRespDto.setPhotoList(photoService.getAllPhoto(pageNum, numOfRows, albumId, title));
         } catch (Exception e) {
             getAllPhotoRespDto.setCode(ResultCode.UNKNOWN_ERROR);
             getAllPhotoRespDto.setMessage("Unexpected Error");

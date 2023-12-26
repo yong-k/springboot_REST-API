@@ -8,6 +8,7 @@ import com.study.web2.dto.post.GetPostRespDto;
 import com.study.web2.dto.post.UpdatePostReqDto;
 import com.study.web2.exception.DataNotFoundException;
 import com.study.web2.service.PostService;
+import com.study.web2.utils.Pagination;
 import com.study.web2.vo.PostVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +40,16 @@ public class PostController {
     }
 
     @GetMapping("/post")
-    public GetAllPostRespDto getAllPost(@RequestParam(required = false) Long userId) {
+    public GetAllPostRespDto getAllPost(@RequestParam(required = false) Long userId,
+                                        @RequestParam(required = false) String title,
+                                        @RequestParam(required = false) String body,
+                                        @RequestParam(required = false, defaultValue = "1") int pageNum,
+                                        @RequestParam(required = false, defaultValue = "10") int numOfRows) {
         GetAllPostRespDto getAllPostRespDto = new GetAllPostRespDto();
         try {
-            getAllPostRespDto.setPostList(postService.getAllPost(userId));
+            int totalDataCount = postService.countPost(userId, title, body);
+            getAllPostRespDto.setPage(new Pagination(totalDataCount, numOfRows, pageNum));
+            getAllPostRespDto.setPostList(postService.getAllPost(pageNum, numOfRows, userId, title, body));
         } catch (Exception e) {
             getAllPostRespDto.setCode(ResultCode.UNKNOWN_ERROR);
             getAllPostRespDto.setMessage("Unexpected Error");

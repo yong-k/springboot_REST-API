@@ -8,6 +8,7 @@ import com.study.web2.dto.comment.GetCommentRespDto;
 import com.study.web2.dto.comment.UpdateCommentReqDto;
 import com.study.web2.exception.DataNotFoundException;
 import com.study.web2.service.CommentService;
+import com.study.web2.utils.Pagination;
 import com.study.web2.vo.CommentVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +40,17 @@ public class CommentController {
     }
 
     @GetMapping("/comment")
-    public GetAllCommentRespDto getAllComment(@RequestParam(required = false) Long postId) {
+    public GetAllCommentRespDto getAllComment(@RequestParam(required = false) Long postId,
+                                              @RequestParam(required = false) String name,
+                                              @RequestParam(required = false) String email,
+                                              @RequestParam(required = false) String body,
+                                              @RequestParam(required = false, defaultValue = "1") int pageNum,
+                                              @RequestParam(required = false, defaultValue = "10") int numOfRows) {
         GetAllCommentRespDto getAllCommentRespDto = new GetAllCommentRespDto();
         try {
-            getAllCommentRespDto.setCommentList(commentService.getAllComment(postId));
+            int totalDataCount = commentService.countComment(postId, name, email, body);
+            getAllCommentRespDto.setPage(new Pagination(totalDataCount, numOfRows, pageNum));
+            getAllCommentRespDto.setCommentList(commentService.getAllComment(pageNum, numOfRows, postId, name, email, body));
         } catch (Exception e) {
             getAllCommentRespDto.setCode(ResultCode.UNKNOWN_ERROR);
             getAllCommentRespDto.setMessage("Unexpected Error");

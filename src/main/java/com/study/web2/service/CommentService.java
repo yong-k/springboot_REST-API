@@ -18,8 +18,13 @@ public class CommentService {
         commentMapper.createComment(comment);
     }
 
-    public List<CommentVo> getAllComment(Long postId) {
-        return commentMapper.getAllComment(postId);
+    public List<CommentVo> getAllComment(int pageNum, int numOfRows, Long postId, String name, String email, String body) {
+        pageNum = numOfRows * (pageNum - 1);
+        return commentMapper.getAllComment(pageNum, numOfRows, postId, name, email, body);
+    }
+
+    public int countComment(Long postId, String name, String email, String body) {
+        return commentMapper.countComment(postId, name, email, body);
     }
 
     public CommentVo getCommentById(Long id) {

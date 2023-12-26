@@ -8,6 +8,7 @@ import com.study.web2.dto.album.GetAllAlbumRespDto;
 import com.study.web2.dto.album.UpdateAlbumReqDto;
 import com.study.web2.exception.DataNotFoundException;
 import com.study.web2.service.AlbumService;
+import com.study.web2.utils.Pagination;
 import com.study.web2.vo.AlbumVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +40,15 @@ public class AlbumController {
     }
 
     @GetMapping("/album")
-    public GetAllAlbumRespDto getAllAlbum(@RequestParam(required = false) Long userId) {
+    public GetAllAlbumRespDto getAllAlbum(@RequestParam(required = false) Long userId,
+                                          @RequestParam(required = false) String title,
+                                          @RequestParam(required = false, defaultValue = "1") int pageNum,
+                                          @RequestParam(required = false, defaultValue = "10") int numOfRows) {
         GetAllAlbumRespDto getAllAlbumRespDto = new GetAllAlbumRespDto();
         try {
-            getAllAlbumRespDto.setAlbumList(albumService.getAllAlbum(userId));
+            int totalDataCount = albumService.countAlbum(userId, title);
+            getAllAlbumRespDto.setPage(new Pagination(totalDataCount, numOfRows, pageNum));
+            getAllAlbumRespDto.setAlbumList(albumService.getAllAlbum(pageNum, numOfRows, userId, title));
         } catch (Exception e) {
             getAllAlbumRespDto.setCode(ResultCode.UNKNOWN_ERROR);
             getAllAlbumRespDto.setMessage("Unexpected Error");

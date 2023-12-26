@@ -12,10 +12,33 @@
         FROM Todo
         <where>
             <if test="userId != null">
-                AND userId = #{userId}
+                userId = #{userId}
+            </if>
+            <if test="title != null">
+                AND title LIKE CONCAT('%', #{title}, '%')
+            </if>
+            <if test="completed != null">
+                AND completed = #{completed}
             </if>
         </where>
         ORDER BY id DESC
+        LIMIT #{numOfRows} OFFSET #{pageNum}
+    </select>
+
+    <select id="countTodo" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM Todo
+        <where>
+            <if test="userId != null">
+                userId = #{userId}
+            </if>
+            <if test="title != null">
+                AND title LIKE CONCAT('%', #{title}, '%')
+            </if>
+            <if test="completed != null">
+                AND completed = #{completed}
+            </if>
+        </where>
     </select>
 
     <select id="getTodoById" resultType="com.study.web2.vo.TodoVo">
