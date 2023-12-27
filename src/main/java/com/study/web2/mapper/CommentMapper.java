@@ -14,9 +14,9 @@ public interface CommentMapper {
 
     int countComment(Long postId, String name, String email, String body);
 
-    CommentVo getCommentById(Long id);
+    CommentVo getCommentById(long id);
 
     int updateComment(CommentVo comment);
 
-    int deleteComment(Long id);
+    int deleteComment(long id);
 }

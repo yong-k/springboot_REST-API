@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class CreateAlbumReqDto {
-    private Long userId;
+    private long userId;
     private String title;
 }

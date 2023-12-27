@@ -27,7 +27,7 @@ public class CommentService {
         return commentMapper.countComment(postId, name, email, body);
     }
 
-    public CommentVo getCommentById(Long id) {
+    public CommentVo getCommentById(long id) {
         CommentVo comment = commentMapper.getCommentById(id);
         if (comment == null)
             throw new DataNotFoundException("Not exist comment: id = " + id);
@@ -40,7 +40,7 @@ public class CommentService {
             throw new DataNotFoundException("[UPDATE fail] Not exist comment: id = " + comment.getId());
     }
 
-    public void deleteComment(Long id) {
+    public void deleteComment(long id) {
         int result = commentMapper.deleteComment(id);
         if (result < 1)
             throw new DataNotFoundException("[DELETE fail] Not exist comment: id = " + id);

@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TodoVo {
-    private Long id;
-    private Long userId;
+    private long id;
+    private long userId;
     private String title;
     private Integer completed;
 

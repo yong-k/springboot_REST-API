@@ -14,9 +14,9 @@ public interface PhotoMapper {
 
     int countPhoto(Long albumId, String title);
 
-    PhotoVo getPhotoById(Long id);
+    PhotoVo getPhotoById(long id);
 
     int updatePhoto(PhotoVo photo);
 
-    int deletePhoto(Long id);
+    int deletePhoto(long id);
 }

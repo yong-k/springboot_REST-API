@@ -27,7 +27,7 @@ public class AlbumService {
         return albumMapper.countAlbum(userId, title);
     }
 
-    public AlbumVo getAlbumById(Long id) {
+    public AlbumVo getAlbumById(long id) {
         AlbumVo album = albumMapper.getAlbumById(id);
         if (album == null)
             throw new DataNotFoundException("Not exist album: id = " + id);
@@ -40,7 +40,7 @@ public class AlbumService {
             throw new DataNotFoundException("[UPDATE fail] Not exist album: id = " + album.getId());
     }
 
-    public void deleteAlbum(Long id) {
+    public void deleteAlbum(long id) {
         int result = albumMapper.deleteAlbum(id);
         if (result < 1)
             throw new DataNotFoundException("[DELETE fail] Not exist album: id = " + id);

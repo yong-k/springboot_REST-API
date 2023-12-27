@@ -27,7 +27,7 @@ public class PostService {
         return postMapper.countPost(userId, title, body);
     }
 
-    public PostVo getPostById(Long id) {
+    public PostVo getPostById(long id) {
         PostVo post = postMapper.getPostById(id);
         if (post == null)
             throw new DataNotFoundException("Not exist post: id = " + id);
@@ -40,7 +40,7 @@ public class PostService {
             throw new DataNotFoundException("[UPDATE fail] Not exist post: id = " + post.getId());
     }
 
-    public void deletePost(Long id) {
+    public void deletePost(long id) {
         int result = postMapper.deletePost(id);
         if (result < 1)
             throw new DataNotFoundException("[DELETE fail] Not exist post: id = " + id);

@@ -27,7 +27,7 @@ public class TodoService {
         return todoMapper.countTodo(userId, title, completed);
     }
 
-    public TodoVo getTodoById(Long id) {
+    public TodoVo getTodoById(long id) {
         TodoVo todo = todoMapper.getTodoById(id);
         if (todo == null)
             throw new DataNotFoundException("Not exist todo: id = " + id);
@@ -40,7 +40,7 @@ public class TodoService {
             throw new DataNotFoundException("[UPDATE fail] Not exist todo: id = " + todo.getId());
     }
 
-    public void deleteTodo(Long id) {
+    public void deleteTodo(long id) {
         int result = todoMapper.deleteTodo(id);
         if (result < 1)
             throw new DataNotFoundException("[DELETE fail] Not exist todo: id = " + id);

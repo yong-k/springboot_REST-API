@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GetAllUserRespDto {
-    private ResultCode code = ResultCode.SUCCESS;
+    private int code = ResultCode.SUCCESS.value();
     private String message;
     private List<UserVo> userList;
     private Pagination page;

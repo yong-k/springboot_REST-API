@@ -29,10 +29,10 @@ public class UserController {
         try {
             userService.createUser(new UserVo(createUserReqDto));
         } catch (DataIntegrityViolationException e) {
-            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION);
+            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION.value());
             commonRespDto.setMessage("INSERT fail");
         } catch (Exception e) {
-            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             commonRespDto.setMessage("Unexpected Error");
             log.error("Error in UserController.createUser()", e);
         }
@@ -50,7 +50,7 @@ public class UserController {
             getAllUserRespDto.setPage(new Pagination(totalDataCount, numOfRows, pageNum));
             getAllUserRespDto.setUserList(userService.getAllUser(pageNum, numOfRows, username, email));
         } catch (Exception e) {
-            getAllUserRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            getAllUserRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             getAllUserRespDto.setMessage("Unexpected Error");
             log.error("Error in UserController.getAllUser()", e);
         }
@@ -58,15 +58,15 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public GetUserRespDto getUserById(@PathVariable Long id) {
+    public GetUserRespDto getUserById(@PathVariable long id) {
         GetUserRespDto getUserRespDto = new GetUserRespDto();
         try {
             getUserRespDto.setUser(userService.getUserById(id));
         } catch (DataNotFoundException e) {
-            getUserRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            getUserRespDto.setCode(ResultCode.DATA_NOT_FOUND.value());
             getUserRespDto.setMessage(e.getLocalizedMessage());
         } catch (Exception e) {
-            getUserRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            getUserRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             getUserRespDto.setMessage("Unexpected Error");
             log.error("Error in UserController.getUserById()", e);
         }
@@ -74,20 +74,20 @@ public class UserController {
     }
 
     @PutMapping("/user/{id}")
-    public CommonRespDto updateUser(@PathVariable Long id, @RequestBody UpdateUserReqDto updateUserReqDto) {
+    public CommonRespDto updateUser(@PathVariable long id, @RequestBody UpdateUserReqDto updateUserReqDto) {
         CommonRespDto commonRespDto = new CommonRespDto();
         try {
             UserVo user = new UserVo(updateUserReqDto);
             user.setId(id);
             userService.updateUser(user);
         } catch (DataNotFoundException e) {
-            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND.value());
             commonRespDto.setMessage(e.getLocalizedMessage());
         } catch (DataIntegrityViolationException e) {
-            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION);
+            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION.value());
             commonRespDto.setMessage("UPDATE fail");
         } catch (Exception e) {
-            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             commonRespDto.setMessage("Unexpected Error");
             log.error("Error in UserController.updateUser()", e);
         }
@@ -95,15 +95,15 @@ public class UserController {
     }
 
     @DeleteMapping("/user/{id}")
-    public CommonRespDto deleteUser(@PathVariable Long id) {
+    public CommonRespDto deleteUser(@PathVariable long id) {
         CommonRespDto commonRespDto = new CommonRespDto();
         try {
             userService.deleteUser(id);
         } catch (DataNotFoundException e) {
-            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND.value());
             commonRespDto.setMessage(e.getLocalizedMessage());
         } catch (Exception e) {
-            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             commonRespDto.setMessage("Unexpected Error");
             log.error("Error in UserController.deleteUser()", e);
         }

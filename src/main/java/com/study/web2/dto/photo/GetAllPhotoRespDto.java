@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GetAllPhotoRespDto {
-    private ResultCode code;
+    private int code = ResultCode.SUCCESS.value();
     private String message;
     private List<PhotoVo> photoList;
     private Pagination page;

@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PhotoVo {
-    private Long id;
-    private Long albumId;
+    private long id;
+    private long albumId;
     private String title;
     private String url;
     private String thumbnailUrl;

@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CommentVo {
-    private Long id;
-    private Long postId;
+    private long id;
+    private long postId;
     private String name;
     private String email;
     private String body;

@@ -14,9 +14,9 @@ public interface PostMapper {
 
     int countPost(Long userId, String title, String body);
 
-    PostVo getPostById(Long id);
+    PostVo getPostById(long id);
 
     int updatePost(PostVo post);
 
-    int deletePost(Long id);
+    int deletePost(long id);
 }

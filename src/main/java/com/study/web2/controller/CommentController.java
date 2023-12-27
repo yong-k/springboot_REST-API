@@ -29,10 +29,10 @@ public class CommentController {
         try {
             commentService.createComment(new CommentVo(createCommentReqDto));
         } catch (DataIntegrityViolationException e) {
-            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION);
+            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION.value());
             commonRespDto.setMessage("INSERT fail");
         } catch (Exception e) {
-            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             commonRespDto.setMessage("Unexpected Error");
             log.error("Error in CommentController.createComment()", e);
         }
@@ -52,7 +52,7 @@ public class CommentController {
             getAllCommentRespDto.setPage(new Pagination(totalDataCount, numOfRows, pageNum));
             getAllCommentRespDto.setCommentList(commentService.getAllComment(pageNum, numOfRows, postId, name, email, body));
         } catch (Exception e) {
-            getAllCommentRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            getAllCommentRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             getAllCommentRespDto.setMessage("Unexpected Error");
             log.error("Error in CommentController.getAllComment()", e);
         }
@@ -60,15 +60,15 @@ public class CommentController {
     }
 
     @GetMapping("/comment/{id}")
-    public GetCommentRespDto getCommentById(@PathVariable Long id) {
+    public GetCommentRespDto getCommentById(@PathVariable long id) {
         GetCommentRespDto getCommentRespDto = new GetCommentRespDto();
         try {
             getCommentRespDto.setComment(commentService.getCommentById(id));
         } catch (DataNotFoundException e) {
-            getCommentRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            getCommentRespDto.setCode(ResultCode.DATA_NOT_FOUND.value());
             getCommentRespDto.setMessage(e.getLocalizedMessage());
         } catch (Exception e) {
-            getCommentRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            getCommentRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             getCommentRespDto.setMessage("Unexpected Error");
             log.error("Error in CommentController.getCommentById()", e);
         }
@@ -76,20 +76,20 @@ public class CommentController {
     }
 
     @PutMapping("/comment/{id}")
-    public CommonRespDto updateComment(@PathVariable Long id, @RequestBody UpdateCommentReqDto updateCommentReqDto) {
+    public CommonRespDto updateComment(@PathVariable long id, @RequestBody UpdateCommentReqDto updateCommentReqDto) {
         CommonRespDto commonRespDto = new CommonRespDto();
         try {
             CommentVo comment = new CommentVo(updateCommentReqDto);
             comment.setId(id);
             commentService.updateComment(comment);
         } catch (DataNotFoundException e) {
-            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND.value());
             commonRespDto.setMessage(e.getLocalizedMessage());
         } catch (DataIntegrityViolationException e) {
-            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION);
+            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION.value());
             commonRespDto.setMessage("UPDATE fail");
         } catch (Exception e) {
-            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             commonRespDto.setMessage("Unexpected Error");
             log.error("Error in CommentController.updateComment()", e);
         }
@@ -97,15 +97,15 @@ public class CommentController {
     }
 
     @DeleteMapping("/comment/{id}")
-    public CommonRespDto deleteComment(@PathVariable Long id) {
+    public CommonRespDto deleteComment(@PathVariable long id) {
         CommonRespDto commonRespDto = new CommonRespDto();
         try {
             commentService.deleteComment(id);
         } catch (DataNotFoundException e) {
-            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND.value());
             commonRespDto.setMessage(e.getLocalizedMessage());
         } catch (Exception e) {
-            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             commonRespDto.setMessage("Unexpected Error");
             log.error("Error in CommentController.deleteComment()", e);
         }

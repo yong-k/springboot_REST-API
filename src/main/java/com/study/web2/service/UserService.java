@@ -27,7 +27,7 @@ public class UserService {
         return userMapper.countUser(username, email);
     }
 
-    public UserVo getUserById(Long id) {
+    public UserVo getUserById(long id) {
         UserVo user = userMapper.getUserById(id);
         if (user == null)
             throw new DataNotFoundException("Not exist user: id = " + id);
@@ -40,7 +40,7 @@ public class UserService {
             throw new DataNotFoundException("[UPDATE fail] Not exist user: id = " + user.getId());
     }
 
-    public void deleteUser(Long id) {
+    public void deleteUser(long id) {
         int result = userMapper.deleteUser(id);
         if (result < 1)
             throw new DataNotFoundException("[DELETE fail] Not exist user: id = " + id);

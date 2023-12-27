@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class CreateTodoReqDto {
-    private Long userId;
+    private long userId;
     private String title;
     private Integer completed;
 }

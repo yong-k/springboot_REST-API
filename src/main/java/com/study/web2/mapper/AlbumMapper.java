@@ -14,9 +14,9 @@ public interface AlbumMapper {
 
     int countAlbum(Long userId, String title);
 
-    AlbumVo getAlbumById(Long id);
+    AlbumVo getAlbumById(long id);
 
     int updateAlbum(AlbumVo album);
 
-    int deleteAlbum(Long id);
+    int deleteAlbum(long id);
 }

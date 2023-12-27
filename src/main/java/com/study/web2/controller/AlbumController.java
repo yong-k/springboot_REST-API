@@ -29,10 +29,10 @@ public class AlbumController {
         try {
             albumService.createAlbum(new AlbumVo(createAlbumReqDto));
         } catch (DataIntegrityViolationException e) {
-            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION);
+            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION.value());
             commonRespDto.setMessage("INSERT fail");
         } catch (Exception e) {
-            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             commonRespDto.setMessage("Unexpected Error");
             log.error("Error in AlbumController.createAlbum()", e);
         }
@@ -50,7 +50,7 @@ public class AlbumController {
             getAllAlbumRespDto.setPage(new Pagination(totalDataCount, numOfRows, pageNum));
             getAllAlbumRespDto.setAlbumList(albumService.getAllAlbum(pageNum, numOfRows, userId, title));
         } catch (Exception e) {
-            getAllAlbumRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            getAllAlbumRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             getAllAlbumRespDto.setMessage("Unexpected Error");
             log.error("Error in AlbumController.getAllAlbum()", e);
         }
@@ -58,15 +58,15 @@ public class AlbumController {
     }
 
     @GetMapping("/album/{id}")
-    public GetAlbumRespDto getAlbumById(@PathVariable Long id) {
+    public GetAlbumRespDto getAlbumById(@PathVariable long id) {
         GetAlbumRespDto getAlbumRespDto = new GetAlbumRespDto();
         try {
             getAlbumRespDto.setAlbum(albumService.getAlbumById(id));
         } catch (DataNotFoundException e) {
-            getAlbumRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            getAlbumRespDto.setCode(ResultCode.DATA_NOT_FOUND.value());
             getAlbumRespDto.setMessage(e.getLocalizedMessage());
         } catch (Exception e) {
-            getAlbumRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            getAlbumRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             getAlbumRespDto.setMessage("Unexpected Error");
             log.error("Error in AlbumController.getAlbumById()", e);
         }
@@ -74,20 +74,20 @@ public class AlbumController {
     }
 
     @PutMapping("/album/{id}")
-    public CommonRespDto updateAlbum(@PathVariable Long id, @RequestBody UpdateAlbumReqDto updateAlbumReqDto) {
+    public CommonRespDto updateAlbum(@PathVariable long id, @RequestBody UpdateAlbumReqDto updateAlbumReqDto) {
         CommonRespDto commonRespDto = new CommonRespDto();
         try {
             AlbumVo album = new AlbumVo(updateAlbumReqDto);
             album.setId(id);
             albumService.updateAlbum(album);
         } catch (DataNotFoundException e) {
-            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND.value());
             commonRespDto.setMessage(e.getLocalizedMessage());
         } catch (DataIntegrityViolationException e) {
-            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION);
+            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION.value());
             commonRespDto.setMessage("UPDATE fail");
         } catch (Exception e) {
-            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             commonRespDto.setMessage("Unexpected Error");
             log.error("Error in AlbumController.updateAlbum()", e);
         }
@@ -95,15 +95,15 @@ public class AlbumController {
     }
 
     @DeleteMapping("/album/{id}")
-    public CommonRespDto deleteAlbum(@PathVariable Long id) {
+    public CommonRespDto deleteAlbum(@PathVariable long id) {
         CommonRespDto commonRespDto = new CommonRespDto();
         try {
             albumService.deleteAlbum(id);
         } catch (DataNotFoundException e) {
-            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND.value());
             commonRespDto.setMessage(e.getLocalizedMessage());
         } catch (Exception e) {
-            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             commonRespDto.setMessage("Unexpected Error");
             log.error("Error in AlbumController.deleteAlbum()", e);
         }

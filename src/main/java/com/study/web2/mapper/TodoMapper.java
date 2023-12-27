@@ -14,9 +14,9 @@ public interface TodoMapper {
 
     int countTodo(Long userId, String title, Integer completed);
 
-    TodoVo getTodoById(Long id);
+    TodoVo getTodoById(long id);
 
     int updateTodo(TodoVo todo);
 
-    int deleteTodo(Long id);
+    int deleteTodo(long id);
 }

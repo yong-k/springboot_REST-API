@@ -29,10 +29,10 @@ public class TodoController {
         try {
             todoService.createTodo(new TodoVo(createTodoReqDto));
         } catch (DataIntegrityViolationException e) {
-            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION);
+            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION.value());
             commonRespDto.setMessage("INSERT fail");
         } catch (Exception e) {
-            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             commonRespDto.setMessage("Unexpected Error");
             log.error("Error in TodoController.createTodo()", e);
         }
@@ -51,7 +51,7 @@ public class TodoController {
             getAllTodoRespDto.setPage(new Pagination(totalDataCount, numOfRows, pageNum));
             getAllTodoRespDto.setTodoList(todoService.getAllTodo(pageNum, numOfRows, userId, title, completed));
         } catch (Exception e) {
-            getAllTodoRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            getAllTodoRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             getAllTodoRespDto.setMessage("Unexpected Error");
             log.error("Error in TodoController.getAllTodo()", e);
         }
@@ -59,15 +59,15 @@ public class TodoController {
     }
 
     @GetMapping("/todo/{id}")
-    public GetTodoRespDto getTodoById(@PathVariable Long id) {
+    public GetTodoRespDto getTodoById(@PathVariable long id) {
         GetTodoRespDto getTodoRespDto = new GetTodoRespDto();
         try {
             getTodoRespDto.setTodo(todoService.getTodoById(id));
         } catch (DataNotFoundException e) {
-            getTodoRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            getTodoRespDto.setCode(ResultCode.DATA_NOT_FOUND.value());
             getTodoRespDto.setMessage(e.getLocalizedMessage());
         } catch (Exception e) {
-            getTodoRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            getTodoRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             getTodoRespDto.setMessage("Unexpected Error");
             log.error("Error in TodoController.getTodoById()", e);
         }
@@ -75,20 +75,20 @@ public class TodoController {
     }
 
     @PutMapping("/todo/{id}")
-    public CommonRespDto updateTodo(@PathVariable Long id, @RequestBody UpdateTodoReqDto updateTodoReqDto) {
+    public CommonRespDto updateTodo(@PathVariable long id, @RequestBody UpdateTodoReqDto updateTodoReqDto) {
         CommonRespDto commonRespDto = new CommonRespDto();
         try {
             TodoVo todo = new TodoVo(updateTodoReqDto);
             todo.setId(id);
             todoService.updateTodo(todo);
         } catch (DataNotFoundException e) {
-            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND.value());
             commonRespDto.setMessage(e.getLocalizedMessage());
         } catch (DataIntegrityViolationException e) {
-            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION);
+            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION.value());
             commonRespDto.setMessage("UPDATE fail");
         } catch (Exception e) {
-            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             commonRespDto.setMessage("Unexpected Error");
             log.error("Error in TodoController.updateTodo()", e);
         }
@@ -96,15 +96,15 @@ public class TodoController {
     }
 
     @DeleteMapping("/todo/{id}")
-    public CommonRespDto deleteTodo(@PathVariable Long id) {
+    public CommonRespDto deleteTodo(@PathVariable long id) {
         CommonRespDto commonRespDto = new CommonRespDto();
         try {
             todoService.deleteTodo(id);
         } catch (DataNotFoundException e) {
-            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND.value());
             commonRespDto.setMessage(e.getLocalizedMessage());
         } catch (Exception e) {
-            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             commonRespDto.setMessage("Unexpected Error");
             log.error("Error in TodoController.deleteTodo()", e);
         }

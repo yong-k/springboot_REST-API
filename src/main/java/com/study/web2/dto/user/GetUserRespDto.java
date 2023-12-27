@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GetUserRespDto {
-    private ResultCode code = ResultCode.SUCCESS;
+    private int code = ResultCode.SUCCESS.value();
     private String message;
     private UserVo user;
 }

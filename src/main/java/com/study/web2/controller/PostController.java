@@ -29,10 +29,10 @@ public class PostController {
         try {
             postService.createPost(new PostVo(createPostReqDto));
         } catch (DataIntegrityViolationException e) {
-            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION);
+            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION.value());
             commonRespDto.setMessage("INSERT fail");
         } catch (Exception e) {
-            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             commonRespDto.setMessage("Unexpected Error");
             log.error("Error in PostController.createPost()", e);
         }
@@ -51,7 +51,7 @@ public class PostController {
             getAllPostRespDto.setPage(new Pagination(totalDataCount, numOfRows, pageNum));
             getAllPostRespDto.setPostList(postService.getAllPost(pageNum, numOfRows, userId, title, body));
         } catch (Exception e) {
-            getAllPostRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            getAllPostRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             getAllPostRespDto.setMessage("Unexpected Error");
             log.error("Error in PostController.getAllPost()", e);
         }
@@ -59,15 +59,15 @@ public class PostController {
     }
 
     @GetMapping("/post/{id}")
-    public GetPostRespDto getPostById(@PathVariable Long id) {
+    public GetPostRespDto getPostById(@PathVariable long id) {
         GetPostRespDto getPostRespDto = new GetPostRespDto();
         try {
             getPostRespDto.setPost(postService.getPostById(id));
         } catch (DataNotFoundException e) {
-            getPostRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            getPostRespDto.setCode(ResultCode.DATA_NOT_FOUND.value());
             getPostRespDto.setMessage(e.getLocalizedMessage());
         } catch (Exception e) {
-            getPostRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            getPostRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             getPostRespDto.setMessage("Unexpected Error");
             log.error("Error in PostController.getPostById()", e);
         }
@@ -75,20 +75,20 @@ public class PostController {
     }
 
     @PutMapping("/post/{id}")
-    public CommonRespDto updatePost(@PathVariable Long id, @RequestBody UpdatePostReqDto updatePostReqDto) {
+    public CommonRespDto updatePost(@PathVariable long id, @RequestBody UpdatePostReqDto updatePostReqDto) {
         CommonRespDto commonRespDto = new CommonRespDto();
         try {
             PostVo post = new PostVo(updatePostReqDto);
             post.setId(id);
             postService.updatePost(post);
         } catch (DataNotFoundException e) {
-            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND.value());
             commonRespDto.setMessage(e.getLocalizedMessage());
         } catch (DataIntegrityViolationException e) {
-            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION);
+            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION.value());
             commonRespDto.setMessage("UPDATE fail");
         } catch (Exception e) {
-            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             commonRespDto.setMessage("Unexpected Error");
             log.error("Error in PostController.updatePost()", e);
         }
@@ -96,15 +96,15 @@ public class PostController {
     }
 
     @DeleteMapping("/post/{id}")
-    public CommonRespDto deletePost(@PathVariable Long id) {
+    public CommonRespDto deletePost(@PathVariable long id) {
         CommonRespDto commonRespDto = new CommonRespDto();
         try {
             postService.deletePost(id);
         } catch (DataNotFoundException e) {
-            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND.value());
             commonRespDto.setMessage(e.getLocalizedMessage());
         } catch (Exception e) {
-            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             commonRespDto.setMessage("Unexpected Error");
             log.error("Error in UserController.deletePost()", e);
         }

@@ -13,9 +13,9 @@ public interface UserMapper {
 
     int countUser(String username, String email);
 
-    UserVo getUserById(Long id);
+    UserVo getUserById(long id);
 
     int updateUser(UserVo user);
 
-    int deleteUser(Long id);
+    int deleteUser(long id);
 }

@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class CreatePhotoReqDto {
-    private Long albumId;
+    private long albumId;
     private String title;
     private String url;
     private String thumbnailUrl;

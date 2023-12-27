@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserVo {
-    private Long id;
+    private long id;
     private String name;
     private String username;
     private String email;

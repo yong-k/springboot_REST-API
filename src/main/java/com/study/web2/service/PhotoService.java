@@ -27,7 +27,7 @@ public class PhotoService {
         return photoMapper.countPhoto(albumId, title);
     }
 
-    public PhotoVo getPhotoById(Long id) {
+    public PhotoVo getPhotoById(long id) {
         PhotoVo photo = photoMapper.getPhotoById(id);
         if (photo == null)
             throw new DataNotFoundException("Not exist photo: id = " + id);
@@ -40,7 +40,7 @@ public class PhotoService {
             throw new DataNotFoundException("[UPDATE fail] Not exist photo: id = " + photo.getId());
     }
 
-    public void deletePhoto(Long id) {
+    public void deletePhoto(long id) {
         int result = photoMapper.deletePhoto(id);
         if (result < 1)
             throw new DataNotFoundException("[DELETE fail] Not exist photo: id = " + id);

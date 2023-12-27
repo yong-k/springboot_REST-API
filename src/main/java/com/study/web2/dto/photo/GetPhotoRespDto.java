@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GetPhotoRespDto {
-    private ResultCode code;
+    private int code = ResultCode.SUCCESS.value();
     private String message;
     private PhotoVo photo;
 }

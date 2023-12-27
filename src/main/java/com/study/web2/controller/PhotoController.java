@@ -29,10 +29,10 @@ public class PhotoController {
         try {
             photoService.createPhoto(new PhotoVo(createPhotoReqDto));
         } catch (DataIntegrityViolationException e) {
-            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION);
+            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION.value());
             commonRespDto.setMessage("INSERT fail");
         } catch (Exception e) {
-            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             commonRespDto.setMessage("Unexpected Error");
             log.error("Error in PhotoController.createPhoto()", e);
         }
@@ -50,7 +50,7 @@ public class PhotoController {
             getAllPhotoRespDto.setPage(new Pagination(totalDataCount, numOfRows, pageNum));
             getAllPhotoRespDto.setPhotoList(photoService.getAllPhoto(pageNum, numOfRows, albumId, title));
         } catch (Exception e) {
-            getAllPhotoRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            getAllPhotoRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             getAllPhotoRespDto.setMessage("Unexpected Error");
             log.error("Error in PhotoController.getAllPhoto()", e);
         }
@@ -58,15 +58,15 @@ public class PhotoController {
     }
 
     @GetMapping("/photo/{id}")
-    public GetPhotoRespDto getPhotoById(@PathVariable Long id) {
+    public GetPhotoRespDto getPhotoById(@PathVariable long id) {
         GetPhotoRespDto getPhotoRespDto = new GetPhotoRespDto();
         try {
             getPhotoRespDto.setPhoto(photoService.getPhotoById(id));
         } catch (DataNotFoundException e) {
-            getPhotoRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            getPhotoRespDto.setCode(ResultCode.DATA_NOT_FOUND.value());
             getPhotoRespDto.setMessage(e.getLocalizedMessage());
         } catch (Exception e) {
-            getPhotoRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            getPhotoRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             getPhotoRespDto.setMessage("Unexpected Error");
             log.error("Error in PhotoController.getPhotoById()", e);
         }
@@ -74,20 +74,20 @@ public class PhotoController {
     }
 
     @PutMapping("/photo/{id}")
-    public CommonRespDto updatePhoto(@PathVariable Long id, @RequestBody UpdatePhotoReqDto updatePhotoReqDto) {
+    public CommonRespDto updatePhoto(@PathVariable long id, @RequestBody UpdatePhotoReqDto updatePhotoReqDto) {
         CommonRespDto commonRespDto = new CommonRespDto();
         try {
             PhotoVo photo = new PhotoVo(updatePhotoReqDto);
             photo.setId(id);
             photoService.updatePhoto(photo);
         } catch (DataNotFoundException e) {
-            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND.value());
             commonRespDto.setMessage(e.getLocalizedMessage());
         } catch (DataIntegrityViolationException e) {
-            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION);
+            commonRespDto.setCode(ResultCode.DATA_INTEGRITY_VIOLATION.value());
             commonRespDto.setMessage("UPDATE fail");
         } catch (Exception e) {
-            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             commonRespDto.setMessage("Unexpected Error");
             log.error("Error in PhotoController.updatePhoto()", e);
         }
@@ -95,15 +95,15 @@ public class PhotoController {
     }
 
     @DeleteMapping("/photo/{id}")
-    public CommonRespDto deletePhoto(@PathVariable Long id) {
+    public CommonRespDto deletePhoto(@PathVariable long id) {
         CommonRespDto commonRespDto = new CommonRespDto();
         try {
             photoService.deletePhoto(id);
         } catch (DataNotFoundException e) {
-            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND);
+            commonRespDto.setCode(ResultCode.DATA_NOT_FOUND.value());
             commonRespDto.setMessage(e.getLocalizedMessage());
         } catch (Exception e) {
-            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR);
+            commonRespDto.setCode(ResultCode.UNKNOWN_ERROR.value());
             commonRespDto.setMessage("Unexpected Error");
             log.error("Error in PhotoController.deletePhoto()", e);
         }
